@@ -1,0 +1,30 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: go-auth-mongo-depl
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: go-auth-mongo
+    template:
+      metadata:
+        labels:
+          app: go-auth-mongo
+      spec:
+        containers:
+          - name: go-auth-mongo
+            image: mongo
+---
+apiVersion: v1
+kind: Deployment
+metadata:
+  name: go-auth-mongo-srv
+spec:
+  selector:
+    app: go-auth-mongo
+  ports:
+    - name: db
+      protocol: TCP
+      port: 27107
+      targetPort: 27017
